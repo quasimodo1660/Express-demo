@@ -85,6 +85,13 @@ io.sockets.on('connection',function(socket){
     socket.on( "button_clicked", function (data){
         console.log( 'Someone clicked a button!  Reason: '  + data.reason);
         socket.emit( 'server_response', {response:  "sockets are the best!"});
-    })
+        socket.broadcast.emit( "my_broadcast_event",{news:'one to one broadcast!'});
+    });
+     //  EMIT:
+     socket.emit( 'my_emit_event',{news:'server emit an action!'});
+     //  BROADCAST:
+     
+     //  FULL BROADCAST:
+     io.emit( "my_full_broadcast_event",{news:'Welcome!'});
 })
 
