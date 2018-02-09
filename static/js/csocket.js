@@ -6,7 +6,10 @@ $(document).ready(function(){
         socket.emit('button_clicked',{reason:'sb'});
     })
     socket.on('server_response',function(data){
+        console.log(data);
         console.log('server says:'+data.response);
+        console.log('server datas:'+data.reponseData);
+        $('#do').append("<div class='col-md-6'><h1>"+data.reponseData.name+"</h1><h2>"+data.reponseData.loc+"</h2><h2>"+data.reponseData.des+"</h2><h2>"+data.response+"</h2></div>")
     });
     socket.on('my_emit_event',function(data){
         console.log('server says:'+data.news);
@@ -17,7 +20,15 @@ $(document).ready(function(){
     socket.on('my_full_broadcast_event',function(data){
         console.log('server says:'+data.news);
     })
-
+   
+    $('#formb').click(function(e){
+        socket.emit('form_submit',{
+            name:$('#Name').val(),
+            loc:$('#location').val(),
+            lan:$('#lang').val(),
+            des:$('#des').val()
+        })
+    });
 
 
 
