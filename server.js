@@ -91,7 +91,9 @@ io.sockets.on('connection',function(socket){
         console.log(data.name+' '+ data.loc+' '+data.lan+' '+data.des);
         socket.emit( 'server_response', {response:(Math.random() * (1000 - 1) + 1),reponseData:data});
     })
-     
+    socket.on('push_pressed',function(data){
+        socket.emit('update_counter',{response:Number(data.value)+1});
+    })
      //  FULL BROADCAST:
      io.emit( "my_full_broadcast_event",{news:'Welcome!'});
 })

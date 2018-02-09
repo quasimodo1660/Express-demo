@@ -30,7 +30,15 @@ $(document).ready(function(){
         })
     });
 
-
-
-
+    $('#push').click(function(e){
+        socket.emit('push_pressed',{value:$(this).val()})
+    });
+    socket.on('update_counter',function(data){
+        $('#push').val(data.response);
+        $('#numberTitle').text('The button has been pushed '+data.response+' time(s)');
+    })
+    $('#reset').click(function(e){
+        $('#push').val('0');
+        $('#numberTitle').text('The button has been pushed 0 time(s)');
+    })
 })
