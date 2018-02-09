@@ -14,35 +14,6 @@ var session = require('express-session');
 app.use(session({secret:'sbfrank'}));
 //********connect to sqlite database***********/
 const sqlite3 = require('sqlite3').verbose();
-let db = new sqlite3.Database('/Users/Ben/Desktop/FoodTruck/db.sqlite3',(err)=>{
-    if(err){
-        console.error(err.message);
-    }
-    console.log('Connected to the FD database.')
-})
-
-let sql='SELECT DISTINCT username FROM auth_user';
-db.all(sql, [], (err, rows) => {
-    if (err) {
-      throw err;
-    }
-    rows.forEach((row) => {
-      console.log(row.username);
-    });
-  });
-
-
-
-db.close((err) => {
-    if (err) {
-      console.error(err.message);
-    }
-    console.log('Close the database connection.');
-  });
-
-
-
-
 session.times=0;
 
 
@@ -103,7 +74,17 @@ app.use(express.static(__dirname + '/static'));
 app.use(express.static(__dirname + '/static/css'));
 console.log(__dirname);
 
-app.listen(6789,function(){
+var server = app.listen(6789,function(){
     console.log('Listening on port 6789');
+})
+//***sockets stuff *********/
+var io = require('socket.io').listen(server);
+io.sockets.on('connection',function(socket){
+    console.log("Client/socket is connected!");
+    console.log("Client/socket id is: ", socket.id);
+    socket.on( "button_clicked", function (data){
+        console.log( 'Someone clicked a button!  Reason: '  + data.reason);
+        socket.emit( 'server_response', {response:  "sockets are the best!"});
+    })
 })
 
